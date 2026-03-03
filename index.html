@@ -7,488 +7,199 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #c9a84c;
-    --gold-light: #e8d08a;
-    --deep: #1a1209;
-    --warm: #2c1f0e;
-    --parchment: #f5eed8;
-    --parchment-dark: #e8dcc0;
-    --text: #3a2a12;
-    --accent: #8b3a0f;
+    --accent:#c9a84c;--accent-light:#e8d08a;--bg:#1a1209;--card:#2c1f0e;--card2:#1e1508;
+    --text:#f5eed8;--text-dim:rgba(245,238,216,0.55);--border:rgba(201,168,76,0.25);
+    --border-h:rgba(201,168,76,0.5);--btn-text:#1a1209;
   }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background-color: var(--deep);
-    background-image: 
-      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 80%, rgba(139,58,15,0.08) 0%, transparent 50%);
-    min-height: 100vh;
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    color: var(--parchment);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px 60px;
-  }
-
-  header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-
-  .cross-icon {
-    font-size: 28px;
-    color: var(--gold);
-    margin-bottom: 10px;
-    display: block;
-    letter-spacing: 6px;
-  }
-
-  h1 {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(28px, 5vw, 48px);
-    font-weight: 600;
-    color: var(--gold-light);
-    letter-spacing: 3px;
-    text-shadow: 0 2px 20px rgba(201,168,76,0.3);
-  }
-
-  .subtitle {
-    font-style: italic;
-    color: rgba(245,238,216,0.55);
-    font-size: 15px;
-    margin-top: 6px;
-    font-weight: 300;
-  }
-
-  .divider {
-    width: 120px;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--gold), transparent);
-    margin: 16px auto 0;
-  }
-
-  .card {
-    background: linear-gradient(135deg, #2c1f0e 0%, #1e1508 100%);
-    border: 1px solid rgba(201,168,76,0.25);
-    border-radius: 4px;
-    padding: 32px;
-    width: 100%;
-    max-width: 640px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,168,76,0.1);
-    margin-bottom: 24px;
-  }
-
-  label {
-    display: block;
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    letter-spacing: 2.5px;
-    color: var(--gold);
-    margin-bottom: 10px;
-    text-transform: uppercase;
-  }
-
-  textarea {
-    width: 100%;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 2px;
-    color: var(--parchment);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
-    padding: 14px 16px;
-    resize: vertical;
-    min-height: 140px;
-    outline: none;
-    transition: border-color 0.2s;
-    line-height: 1.7;
-  }
-
-  textarea::placeholder { color: rgba(245,238,216,0.3); font-style: italic; }
-  textarea:focus { border-color: rgba(201,168,76,0.5); }
-
-  .hint {
-    font-size: 12px;
-    color: rgba(245,238,216,0.35);
-    margin-top: 8px;
-    font-style: italic;
-  }
-
-  .options-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-  }
-
-  .radio-btn {
-    flex: 1;
-    min-width: 160px;
-    background: rgba(0,0,0,0.2);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 2px;
-    padding: 14px 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    color: rgba(245,238,216,0.7);
-  }
-
-  .radio-btn:hover { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.05); }
-
-  .radio-btn.active {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.1);
-    color: var(--parchment);
-  }
-
-  .radio-dot {
-    width: 14px; height: 14px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(201,168,76,0.4);
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-
-  .radio-btn.active .radio-dot {
-    border-color: var(--gold);
-    background: var(--gold);
-    box-shadow: 0 0 6px rgba(201,168,76,0.5);
-  }
-
-  .generate-btn {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #c9a84c 0%, #a8852a 100%);
-    color: var(--deep);
-    font-family: 'Cinzel', serif;
-    font-size: 13px;
-    letter-spacing: 3px;
-    font-weight: 600;
-    border: none;
-    border-radius: 2px;
-    cursor: pointer;
-    margin-top: 24px;
-    text-transform: uppercase;
-    transition: all 0.2s;
-    box-shadow: 0 4px 16px rgba(201,168,76,0.25);
-  }
-
-  .generate-btn:hover { 
-    background: linear-gradient(135deg, #e8d08a 0%, #c9a84c 100%);
-    box-shadow: 0 6px 24px rgba(201,168,76,0.4);
-    transform: translateY(-1px);
-  }
-
-  .generate-btn:active { transform: translateY(0); }
-  .generate-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-  /* Results */
-  #results-section { width: 100%; max-width: 640px; display: none; }
-
-  .results-header {
-    text-align: center;
-    margin-bottom: 24px;
-  }
-
-  .results-title {
-    font-family: 'Cinzel', serif;
-    font-size: 18px;
-    color: var(--gold-light);
-    letter-spacing: 2px;
-  }
-
-  .results-meta {
-    font-size: 13px;
-    color: rgba(245,238,216,0.45);
-    margin-top: 4px;
-    font-style: italic;
-  }
-
-  .pair-card {
-    background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, rgba(0,0,0,0.2) 100%);
-    border: 1px solid rgba(201,168,76,0.18);
-    border-radius: 2px;
-    padding: 18px 22px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    animation: fadeSlideIn 0.4s ease both;
-  }
-
-  @keyframes fadeSlideIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .pair-num {
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    color: var(--gold);
-    opacity: 0.6;
-    min-width: 24px;
-  }
-
-  .pair-names {
-    flex: 1;
-    font-size: 17px;
-    color: var(--parchment);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .name-pill {
-    font-weight: 400;
-    font-style: italic;
-  }
-
-  .pair-arrow {
-    color: var(--gold);
-    font-size: 14px;
-    opacity: 0.7;
-  }
-
-  .unpaired-section {
-    margin-top: 16px;
-    padding: 14px 20px;
-    background: rgba(139,58,15,0.15);
-    border: 1px solid rgba(139,58,15,0.3);
-    border-radius: 2px;
-    font-size: 14px;
-    color: rgba(245,238,216,0.6);
-  }
-
-  .unpaired-label {
-    font-family: 'Cinzel', serif;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .action-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 20px;
-  }
-
-  .action-btn {
-    flex: 1;
-    padding: 12px;
-    border-radius: 2px;
-    font-family: 'Cinzel', serif;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 1px solid rgba(201,168,76,0.3);
-    background: transparent;
-    color: rgba(245,238,216,0.7);
-  }
-
-  .action-btn:hover { border-color: var(--gold); color: var(--parchment); background: rgba(201,168,76,0.05); }
-
-  .verse {
-    text-align: center;
-    font-style: italic;
-    color: rgba(245,238,216,0.3);
-    font-size: 13px;
-    margin-top: 40px;
-    font-weight: 300;
-    line-height: 1.8;
-  }
-
-  .error-msg {
-    color: #e07a5f;
-    font-size: 13px;
-    margin-top: 10px;
-    font-style: italic;
-    display: none;
-  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background-color:var(--bg);min-height:100vh;font-family:'Cormorant Garamond',Georgia,serif;
+    color:var(--text);display:flex;flex-direction:column;align-items:center;padding:40px 20px 60px;transition:background-color .4s}
+  .theme-bar{position:fixed;top:16px;right:16px;display:flex;align-items:center;gap:8px;
+    background:rgba(0,0,0,.5);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1);
+    border-radius:40px;padding:8px 12px;z-index:100}
+  .theme-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-right:2px}
+  .swatch{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s}
+  .swatch:hover{transform:scale(1.2)}.swatch.active{border-color:white;transform:scale(1.15)}
+  .sw-gold{background:linear-gradient(135deg,#c9a84c,#8b5e1a)}
+  .sw-purple{background:linear-gradient(135deg,#9b6dff,#4a1f8c)}
+  .sw-teal{background:linear-gradient(135deg,#2ec4b6,#0a5c56)}
+  .sw-rose{background:linear-gradient(135deg,#e8728a,#8c1f3a)}
+  .sw-sky{background:linear-gradient(135deg,#60b8f0,#1a4f8c)}
+  .sw-sage{background:linear-gradient(135deg,#7fb069,#2a4a1f)}
+  .sw-custom{background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);position:relative;overflow:hidden}
+  .sw-custom input[type=color]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;border:none;padding:0}
+  header{text-align:center;margin-bottom:40px;margin-top:20px}
+  .cross{font-size:28px;color:var(--accent);margin-bottom:10px;display:block;letter-spacing:6px;transition:color .4s}
+  h1{font-family:'Cinzel',serif;font-size:clamp(28px,5vw,48px);font-weight:600;color:var(--accent-light);letter-spacing:3px;transition:color .4s}
+  .sub{font-style:italic;color:var(--text-dim);font-size:15px;margin-top:6px;font-weight:300}
+  .div{width:120px;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent);margin:16px auto 0;transition:background .4s}
+  .card{background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);
+    border-radius:4px;padding:32px;width:100%;max-width:640px;box-shadow:0 8px 40px rgba(0,0,0,.5);margin-bottom:24px;transition:border-color .4s,background .4s}
+  .lbl{display:block;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2.5px;color:var(--accent);margin-bottom:10px;text-transform:uppercase;transition:color .4s}
+  textarea{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:2px;color:var(--text);
+    font-family:'Cormorant Garamond',serif;font-size:16px;padding:14px 16px;resize:vertical;min-height:140px;outline:none;transition:border-color .2s;line-height:1.7}
+  textarea::placeholder{color:rgba(245,238,216,.3);font-style:italic}
+  textarea:focus{border-color:var(--border-h)}
+  .hint{font-size:12px;color:var(--text-dim);margin-top:8px;font-style:italic}
+  .opt-row{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+  .rbtn{flex:1;min-width:160px;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:2px;
+    padding:14px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-dim)}
+  .rbtn:hover{border-color:var(--border-h);background:rgba(255,255,255,.04)}
+  .rbtn.active{border-color:var(--accent);background:rgba(255,255,255,.06);color:var(--text)}
+  .rdot{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--border);flex-shrink:0;transition:all .2s}
+  .rbtn.active .rdot{border-color:var(--accent);background:var(--accent);box-shadow:0 0 6px var(--accent)}
+  .gen-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:var(--btn-text);
+    font-family:'Cinzel',serif;font-size:13px;letter-spacing:3px;font-weight:600;border:none;border-radius:2px;cursor:pointer;
+    margin-top:24px;text-transform:uppercase;transition:all .2s;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+  .gen-btn:hover{opacity:.88;transform:translateY(-1px)}.gen-btn:active{transform:translateY(0)}
+  #results{width:100%;max-width:640px;display:none}
+  .res-hdr{text-align:center;margin-bottom:24px}
+  .res-title{font-family:'Cinzel',serif;font-size:18px;color:var(--accent-light);letter-spacing:2px;transition:color .4s}
+  .res-meta{font-size:13px;color:var(--text-dim);margin-top:4px;font-style:italic}
+  .pair{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:2px;
+    padding:18px 22px;margin-bottom:10px;display:flex;align-items:center;gap:16px;animation:fsi .4s ease both;transition:border-color .4s}
+  @keyframes fsi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .pnum{font-family:'Cinzel',serif;font-size:11px;color:var(--accent);opacity:.6;min-width:24px;transition:color .4s}
+  .pnames{flex:1;font-size:17px;color:var(--text);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .npill{font-weight:400;font-style:italic}
+  .parrow{color:var(--accent);font-size:14px;opacity:.7;transition:color .4s}
+  .unpaired{margin-top:16px;padding:14px 20px;background:rgba(255,255,255,.03);border:1px solid var(--border);
+    border-radius:2px;font-size:14px;color:var(--text-dim)}
+  .ulbl{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:6px;transition:color .4s}
+  .act-row{display:flex;gap:12px;margin-top:20px}
+  .abtn{flex:1;padding:12px;border-radius:2px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;
+    text-transform:uppercase;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--text-dim)}
+  .abtn:hover{border-color:var(--accent);color:var(--text);background:rgba(255,255,255,.04)}
+  .verse{text-align:center;font-style:italic;color:var(--text-dim);font-size:13px;margin-top:40px;font-weight:300;line-height:1.8;opacity:.5}
+  .err{color:#e07a5f;font-size:13px;margin-top:10px;font-style:italic;display:none}
 </style>
 </head>
 <body>
-
+<div class="theme-bar">
+  <span class="theme-label">Theme</span>
+  <div class="swatch sw-gold active"   onclick="applyTheme('gold',this)"   title="Gold"></div>
+  <div class="swatch sw-purple"        onclick="applyTheme('purple',this)" title="Purple"></div>
+  <div class="swatch sw-teal"          onclick="applyTheme('teal',this)"   title="Teal"></div>
+  <div class="swatch sw-rose"          onclick="applyTheme('rose',this)"   title="Rose"></div>
+  <div class="swatch sw-sky"           onclick="applyTheme('sky',this)"    title="Sky"></div>
+  <div class="swatch sw-sage"          onclick="applyTheme('sage',this)"   title="Sage"></div>
+  <div class="swatch sw-custom"        title="Pick any colour">
+    <input type="color" id="cpick" value="#c9a84c" oninput="applyCustom(this.value)">
+  </div>
+</div>
 <header>
-  <span class="cross-icon">✦ ✝ ✦</span>
+  <span class="cross">✦ ✝ ✦</span>
   <h1>Prayer Roulette</h1>
-  <p class="subtitle">Bearing one another's burdens</p>
-  <div class="divider"></div>
+  <p class="sub">Bearing one another's burdens</p>
+  <div class="div"></div>
 </header>
-
 <div class="card">
-  <label for="names-input">Enter Names</label>
-  <textarea id="names-input" placeholder="Type one name per line, e.g.&#10;Sarah&#10;Emmanuel&#10;Heather&#10;David&#10;Grace&#10;Joseph"></textarea>
+  <span class="lbl">Enter Names</span>
+  <textarea id="names" placeholder="Type one name per line, e.g.&#10;Sarah&#10;Emmanuel&#10;Heather&#10;David&#10;Grace&#10;Joseph"></textarea>
   <p class="hint">One name per line — you can paste a list directly</p>
-
-  <div style="margin-top: 24px;">
-    <label>Pairing Mode</label>
-    <div class="options-row">
-      <div class="radio-btn active" id="mode-mutual" onclick="setMode('mutual')">
-        <div class="radio-dot"></div>
-        Pray for each other (mutual)
-      </div>
-      <div class="radio-btn" id="mode-oneway" onclick="setMode('oneway')">
-        <div class="radio-dot"></div>
-        One prays for one (chain)
-      </div>
+  <div style="margin-top:24px">
+    <span class="lbl">Pairing Mode</span>
+    <div class="opt-row">
+      <div class="rbtn active" id="m-mutual" onclick="setMode('mutual')"><div class="rdot"></div>Pray for each other (mutual)</div>
+      <div class="rbtn" id="m-chain" onclick="setMode('chain')"><div class="rdot"></div>One prays for one (chain)</div>
     </div>
   </div>
-
-  <p class="error-msg" id="error-msg">Please enter at least 2 names to generate pairs.</p>
-  <button class="generate-btn" onclick="generatePairs()">✦ Generate Prayer Pairs ✦</button>
+  <p class="err" id="err">Please enter at least 2 names.</p>
+  <button class="gen-btn" onclick="gen()">✦ Generate Prayer Pairs ✦</button>
 </div>
-
-<div id="results-section">
-  <div class="results-header">
-    <div class="results-title">Your Prayer Pairs</div>
-    <div class="results-meta" id="results-meta"></div>
+<div id="results">
+  <div class="res-hdr">
+    <div class="res-title">Your Prayer Pairs</div>
+    <div class="res-meta" id="meta"></div>
   </div>
-  <div id="pairs-list"></div>
-  <div id="unpaired-box" class="unpaired-section" style="display:none;">
-    <div class="unpaired-label">Lone Intercessor</div>
-    <div id="unpaired-name"></div>
+  <div id="plist"></div>
+  <div id="ubox" class="unpaired" style="display:none">
+    <div class="ulbl">Lone Intercessor</div>
+    <div id="uname"></div>
   </div>
-  <div class="action-row">
-    <button class="action-btn" onclick="generatePairs()">↺ Re-shuffle</button>
-    <button class="action-btn" onclick="copyResults()">⧉ Copy Results</button>
-    <button class="action-btn" onclick="resetAll()">✕ Start Over</button>
+  <div class="act-row">
+    <button class="abtn" onclick="gen()">↺ Re-shuffle</button>
+    <button class="abtn" onclick="copyR()">⧉ Copy Results</button>
+    <button class="abtn" onclick="reset()">✕ Start Over</button>
   </div>
 </div>
-
 <p class="verse">"Pray for one another, that you may be healed."<br>James 5:16</p>
-
 <script>
-  let currentMode = 'mutual';
-
-  function setMode(mode) {
-    currentMode = mode;
-    document.querySelectorAll('.radio-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('mode-' + mode).classList.add('active');
-  }
-
-  function getNames() {
-    const raw = document.getElementById('names-input').value;
-    return raw.split('\n')
-      .map(n => n.trim())
-      .filter(n => n.length > 0);
-  }
-
-  function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
-  function generatePairs() {
-    const names = getNames();
-    const errorEl = document.getElementById('error-msg');
-
-    if (names.length < 2) {
-      errorEl.style.display = 'block';
-      return;
-    }
-    errorEl.style.display = 'none';
-
-    const shuffled = shuffle(names);
-    const pairs = [];
-    let unpaired = null;
-
-    if (currentMode === 'mutual') {
-      for (let i = 0; i < shuffled.length - 1; i += 2) {
-        pairs.push([shuffled[i], shuffled[i+1]]);
-      }
-      if (shuffled.length % 2 !== 0) unpaired = shuffled[shuffled.length - 1];
-    } else {
-      // Chain: person i prays for person i+1, last prays for first
-      for (let i = 0; i < shuffled.length; i++) {
-        pairs.push([shuffled[i], shuffled[(i+1) % shuffled.length]]);
-      }
-    }
-
-    renderResults(pairs, unpaired, names.length);
-  }
-
-  function renderResults(pairs, unpaired, total) {
-    const section = document.getElementById('results-section');
-    const list = document.getElementById('pairs-list');
-    const meta = document.getElementById('results-meta');
-    const unpairedBox = document.getElementById('unpaired-box');
-    const unpairedName = document.getElementById('unpaired-name');
-
-    const modeText = currentMode === 'mutual' ? 'Mutual prayer pairs' : 'Prayer chain';
-    meta.textContent = `${modeText} · ${total} ${total === 1 ? 'person' : 'people'} · ${pairs.length} ${pairs.length === 1 ? 'pair' : 'pairs'}`;
-
-    list.innerHTML = '';
-    pairs.forEach((pair, i) => {
-      const div = document.createElement('div');
-      div.className = 'pair-card';
-      div.style.animationDelay = (i * 0.05) + 's';
-      const arrow = currentMode === 'mutual' ? '⟷' : '→';
-      div.innerHTML = `
-        <span class="pair-num">${String(i+1).padStart(2,'0')}</span>
-        <div class="pair-names">
-          <span class="name-pill">${pair[0]}</span>
-          <span class="pair-arrow">${arrow}</span>
-          <span class="name-pill">${pair[1]}</span>
-        </div>
-      `;
-      list.appendChild(div);
-    });
-
-    if (unpaired) {
-      unpairedBox.style.display = 'block';
-      unpairedName.textContent = `${unpaired} will join another pair or pray for the group.`;
-    } else {
-      unpairedBox.style.display = 'none';
-    }
-
-    section.style.display = 'block';
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  function copyResults() {
-    const pairs = document.querySelectorAll('.pair-card');
-    const mode = currentMode === 'mutual' ? 'Mutual prayer pairs' : 'Prayer chain';
-    let text = `✝ Prayer Roulette — ${mode}\n${'─'.repeat(32)}\n`;
-    pairs.forEach((p, i) => {
-      const names = p.querySelectorAll('.name-pill');
-      const arrow = currentMode === 'mutual' ? '↔' : '→';
-      text += `${String(i+1).padStart(2,'0')}. ${names[0].textContent} ${arrow} ${names[1].textContent}\n`;
-    });
-    const unBox = document.getElementById('unpaired-box');
-    if (unBox.style.display !== 'none') {
-      text += `\nNote: ${document.getElementById('unpaired-name').textContent}`;
-    }
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = document.querySelector('.action-btn:nth-child(2)');
-      const orig = btn.textContent;
-      btn.textContent = '✓ Copied!';
-      setTimeout(() => btn.textContent = orig, 2000);
-    });
-  }
-
-  function resetAll() {
-    document.getElementById('names-input').value = '';
-    document.getElementById('results-section').style.display = 'none';
-    document.getElementById('error-msg').style.display = 'none';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+let mode='mutual';
+const T={
+  gold:  {a:'#c9a84c',l:'#e8d08a',bg:'#1a1209',c:'#2c1f0e',c2:'#1e1508',bt:'#1a1209'},
+  purple:{a:'#9b6dff',l:'#c4a8ff',bg:'#0f0a1a',c:'#1e1530',c2:'#160f24',bt:'#0f0a1a'},
+  teal:  {a:'#2ec4b6',l:'#7de8e0',bg:'#071414',c:'#0d2625',c2:'#081a1a',bt:'#071414'},
+  rose:  {a:'#e8728a',l:'#f5aabb',bg:'#180a0e',c:'#2c1018',c2:'#1e0a11',bt:'#180a0e'},
+  sky:   {a:'#60b8f0',l:'#a0d8f8',bg:'#080f18',c:'#0e1e30',c2:'#091525',bt:'#080f18'},
+  sage:  {a:'#7fb069',l:'#b0d49c',bg:'#091008',c:'#152010',c2:'#0d180a',bt:'#091008'},
+};
+function applyTheme(n,el){
+  const t=T[n];if(!t)return;
+  sv(t.a,t.l,t.bg,t.c,t.c2,t.bt);
+  document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
+  if(el)el.classList.add('active');
+}
+function applyCustom(h){
+  const l=bright(h,1.4),bg=bright(h,.12),c=bright(h,.22),c2=bright(h,.16);
+  sv(h,l,bg,c,c2,bg);
+  document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
+}
+function sv(a,l,bg,c,c2,bt){
+  const r=document.documentElement.style;
+  r.setProperty('--accent',a);r.setProperty('--accent-light',l);
+  r.setProperty('--bg',bg);r.setProperty('--card',c);r.setProperty('--card2',c2);
+  r.setProperty('--btn-text',bt);r.setProperty('--border',ha(a,.25));r.setProperty('--border-h',ha(a,.55));
+  document.body.style.backgroundColor=bg;
+}
+function ha(h,a){const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return`rgba(${r},${g},${b},${a})`}
+function bright(h,f){
+  let r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);
+  return '#'+[Math.min(255,Math.round(r*f)),Math.min(255,Math.round(g*f)),Math.min(255,Math.round(b*f))].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function setMode(m){
+  mode=m;
+  document.querySelectorAll('.rbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('m-'+(m==='mutual'?'mutual':'chain')).classList.add('active');
+}
+function names(){return document.getElementById('names').value.split('\n').map(n=>n.trim()).filter(n=>n);}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function gen(){
+  const ns=names();const e=document.getElementById('err');
+  if(ns.length<2){e.style.display='block';return;}e.style.display='none';
+  const s=shuffle(ns),pairs=[];let up=null;
+  if(mode==='mutual'){for(let i=0;i<s.length-1;i+=2)pairs.push([s[i],s[i+1]]);if(s.length%2)up=s[s.length-1];}
+  else{for(let i=0;i<s.length;i++)pairs.push([s[i],s[(i+1)%s.length]]);}
+  render(pairs,up,ns.length);
+}
+function render(pairs,up,tot){
+  const sec=document.getElementById('results'),list=document.getElementById('plist');
+  document.getElementById('meta').textContent=`${mode==='mutual'?'Mutual prayer pairs':'Prayer chain'} · ${tot} people · ${pairs.length} pairs`;
+  list.innerHTML='';
+  pairs.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='pair';d.style.animationDelay=(i*.05)+'s';
+    d.innerHTML=`<span class="pnum">${String(i+1).padStart(2,'0')}</span><div class="pnames"><span class="npill">${p[0]}</span><span class="parrow">${mode==='mutual'?'⟷':'→'}</span><span class="npill">${p[1]}</span></div>`;
+    list.appendChild(d);
+  });
+  const ub=document.getElementById('ubox');
+  if(up){ub.style.display='block';document.getElementById('uname').textContent=`${up} will join another pair or pray for the group.`;}
+  else ub.style.display='none';
+  sec.style.display='block';sec.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function copyR(){
+  const pairs=document.querySelectorAll('.pair');
+  let t=`Prayer Roulette\n${'─'.repeat(28)}\n`;
+  pairs.forEach((p,i)=>{const n=p.querySelectorAll('.npill');t+=`${String(i+1).padStart(2,'0')}. ${n[0].textContent} ${mode==='mutual'?'↔':'→'} ${n[1].textContent}\n`;});
+  const ub=document.getElementById('ubox');
+  if(ub.style.display!=='none')t+=`\nNote: ${document.getElementById('uname').textContent}`;
+  navigator.clipboard.writeText(t).then(()=>{const b=document.querySelectorAll('.abtn')[1];const o=b.textContent;b.textContent='✓ Copied!';setTimeout(()=>b.textContent=o,2000);});
+}
+function reset(){
+  document.getElementById('names').value='';
+  document.getElementById('results').style.display='none';
+  document.getElementById('err').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 </script>
 </body>
 </html>
