@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Roulette</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8d08a;
+    --deep: #1a1209;
+    --warm: #2c1f0e;
+    --parchment: #f5eed8;
+    --parchment-dark: #e8dcc0;
+    --text: #3a2a12;
+    --accent: #8b3a0f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--deep);
+    background-image: 
+      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(139,58,15,0.08) 0%, transparent 50%);
+    min-height: 100vh;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--parchment);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px 60px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .cross-icon {
+    font-size: 28px;
+    color: var(--gold);
+    margin-bottom: 10px;
+    display: block;
+    letter-spacing: 6px;
+  }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 600;
+    color: var(--gold-light);
+    letter-spacing: 3px;
+    text-shadow: 0 2px 20px rgba(201,168,76,0.3);
+  }
+
+  .subtitle {
+    font-style: italic;
+    color: rgba(245,238,216,0.55);
+    font-size: 15px;
+    margin-top: 6px;
+    font-weight: 300;
+  }
+
+  .divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 16px auto 0;
+  }
+
+  .card {
+    background: linear-gradient(135deg, #2c1f0e 0%, #1e1508 100%);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 4px;
+    padding: 32px;
+    width: 100%;
+    max-width: 640px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,168,76,0.1);
+    margin-bottom: 24px;
+  }
+
+  label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--gold);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 2px;
+    color: var(--parchment);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    padding: 14px 16px;
+    resize: vertical;
+    min-height: 140px;
+    outline: none;
+    transition: border-color 0.2s;
+    line-height: 1.7;
+  }
+
+  textarea::placeholder { color: rgba(245,238,216,0.3); font-style: italic; }
+  textarea:focus { border-color: rgba(201,168,76,0.5); }
+
+  .hint {
+    font-size: 12px;
+    color: rgba(245,238,216,0.35);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  .options-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .radio-btn {
+    flex: 1;
+    min-width: 160px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 2px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: rgba(245,238,216,0.7);
+  }
+
+  .radio-btn:hover { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.05); }
+
+  .radio-btn.active {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    color: var(--parchment);
+  }
+
+  .radio-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,168,76,0.4);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .radio-btn.active .radio-dot {
+    border-color: var(--gold);
+    background: var(--gold);
+    box-shadow: 0 0 6px rgba(201,168,76,0.5);
+  }
+
+  .generate-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #c9a84c 0%, #a8852a 100%);
+    color: var(--deep);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    font-weight: 600;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-top: 24px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(201,168,76,0.25);
+  }
+
+  .generate-btn:hover { 
+    background: linear-gradient(135deg, #e8d08a 0%, #c9a84c 100%);
+    box-shadow: 0 6px 24px rgba(201,168,76,0.4);
+    transform: translateY(-1px);
+  }
+
+  .generate-btn:active { transform: translateY(0); }
+  .generate-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* Results */
+  #results-section { width: 100%; max-width: 640px; display: none; }
+
+  .results-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .results-title {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    color: var(--gold-light);
+    letter-spacing: 2px;
+  }
+
+  .results-meta {
+    font-size: 13px;
+    color: rgba(245,238,216,0.45);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  .pair-card {
+    background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, rgba(0,0,0,0.2) 100%);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 2px;
+    padding: 18px 22px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    animation: fadeSlideIn 0.4s ease both;
+  }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .pair-num {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold);
+    opacity: 0.6;
+    min-width: 24px;
+  }
+
+  .pair-names {
+    flex: 1;
+    font-size: 17px;
+    color: var(--parchment);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .name-pill {
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .pair-arrow {
+    color: var(--gold);
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  .unpaired-section {
+    margin-top: 16px;
+    padding: 14px 20px;
+    background: rgba(139,58,15,0.15);
+    border: 1px solid rgba(139,58,15,0.3);
+    border-radius: 2px;
+    font-size: 14px;
+    color: rgba(245,238,216,0.6);
+  }
+
+  .unpaired-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .action-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .action-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 2px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid rgba(201,168,76,0.3);
+    background: transparent;
+    color: rgba(245,238,216,0.7);
+  }
+
+  .action-btn:hover { border-color: var(--gold); color: var(--parchment); background: rgba(201,168,76,0.05); }
+
+  .verse {
+    text-align: center;
+    font-style: italic;
+    color: rgba(245,238,216,0.3);
+    font-size: 13px;
+    margin-top: 40px;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  .error-msg {
+    color: #e07a5f;
+    font-size: 13px;
+    margin-top: 10px;
+    font-style: italic;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="cross-icon">✦ ✝ ✦</span>
+  <h1>Prayer Roulette</h1>
+  <p class="subtitle">Bearing one another's burdens</p>
+  <div class="divider"></div>
+</header>
+
+<div class="card">
+  <label for="names-input">Enter Names</label>
+  <textarea id="names-input" placeholder="Type one name per line, e.g.&#10;Sarah&#10;Emmanuel&#10;Heather&#10;David&#10;Grace&#10;Joseph"></textarea>
+  <p class="hint">One name per line — you can paste a list directly</p>
+
+  <div style="margin-top: 24px;">
+    <label>Pairing Mode</label>
+    <div class="options-row">
+      <div class="radio-btn active" id="mode-mutual" onclick="setMode('mutual')">
+        <div class="radio-dot"></div>
+        Pray for each other (mutual)
+      </div>
+      <div class="radio-btn" id="mode-oneway" onclick="setMode('oneway')">
+        <div class="radio-dot"></div>
+        One prays for one (chain)
+      </div>
+    </div>
+  </div>
+
+  <p class="error-msg" id="error-msg">Please enter at least 2 names to generate pairs.</p>
+  <button class="generate-btn" onclick="generatePairs()">✦ Generate Prayer Pairs ✦</button>
+</div>
+
+<div id="results-section">
+  <div class="results-header">
+    <div class="results-title">Your Prayer Pairs</div>
+    <div class="results-meta" id="results-meta"></div>
+  </div>
+  <div id="pairs-list"></div>
+  <div id="unpaired-box" class="unpaired-section" style="display:none;">
+    <div class="unpaired-label">Lone Intercessor</div>
+    <div id="unpaired-name"></div>
+  </div>
+  <div class="action-row">
+    <button class="action-btn" onclick="generatePairs()">↺ Re-shuffle</button>
+    <button class="action-btn" onclick="copyResults()">⧉ Copy Results</button>
+    <button class="action-btn" onclick="resetAll()">✕ Start Over</button>
+  </div>
+</div>
+
+<p class="verse">"Pray for one another, that you may be healed."<br>James 5:16</p>
+
+<script>
+  let currentMode = 'mutual';
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.querySelectorAll('.radio-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('mode-' + mode).classList.add('active');
+  }
+
+  function getNames() {
+    const raw = document.getElementById('names-input').value;
+    return raw.split('\n')
+      .map(n => n.trim())
+      .filter(n => n.length > 0);
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function generatePairs() {
+    const names = getNames();
+    const errorEl = document.getElementById('error-msg');
+
+    if (names.length < 2) {
+      errorEl.style.display = 'block';
+      return;
+    }
+    errorEl.style.display = 'none';
+
+    const shuffled = shuffle(names);
+    const pairs = [];
+    let unpaired = null;
+
+    if (currentMode === 'mutual') {
+      for (let i = 0; i < shuffled.length - 1; i += 2) {
+        pairs.push([shuffled[i], shuffled[i+1]]);
+      }
+      if (shuffled.length % 2 !== 0) unpaired = shuffled[shuffled.length - 1];
+    } else {
+      // Chain: person i prays for person i+1, last prays for first
+      for (let i = 0; i < shuffled.length; i++) {
+        pairs.push([shuffled[i], shuffled[(i+1) % shuffled.length]]);
+      }
+    }
+
+    renderResults(pairs, unpaired, names.length);
+  }
+
+  function renderResults(pairs, unpaired, total) {
+    const section = document.getElementById('results-section');
+    const list = document.getElementById('pairs-list');
+    const meta = document.getElementById('results-meta');
+    const unpairedBox = document.getElementById('unpaired-box');
+    const unpairedName = document.getElementById('unpaired-name');
+
+    const modeText = currentMode === 'mutual' ? 'Mutual prayer pairs' : 'Prayer chain';
+    meta.textContent = `${modeText} · ${total} ${total === 1 ? 'person' : 'people'} · ${pairs.length} ${pairs.length === 1 ? 'pair' : 'pairs'}`;
+
+    list.innerHTML = '';
+    pairs.forEach((pair, i) => {
+      const div = document.createElement('div');
+      div.className = 'pair-card';
+      div.style.animationDelay = (i * 0.05) + 's';
+      const arrow = currentMode === 'mutual' ? '⟷' : '→';
+      div.innerHTML = `
+        <span class="pair-num">${String(i+1).padStart(2,'0')}</span>
+        <div class="pair-names">
+          <span class="name-pill">${pair[0]}</span>
+          <span class="pair-arrow">${arrow}</span>
+          <span class="name-pill">${pair[1]}</span>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+
+    if (unpaired) {
+      unpairedBox.style.display = 'block';
+      unpairedName.textContent = `${unpaired} will join another pair or pray for the group.`;
+    } else {
+      unpairedBox.style.display = 'none';
+    }
+
+    section.style.display = 'block';
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function copyResults() {
+    const pairs = document.querySelectorAll('.pair-card');
+    const mode = currentMode === 'mutual' ? 'Mutual prayer pairs' : 'Prayer chain';
+    let text = `✝ Prayer Roulette — ${mode}\n${'─'.repeat(32)}\n`;
+    pairs.forEach((p, i) => {
+      const names = p.querySelectorAll('.name-pill');
+      const arrow = currentMode === 'mutual' ? '↔' : '→';
+      text += `${String(i+1).padStart(2,'0')}. ${names[0].textContent} ${arrow} ${names[1].textContent}\n`;
+    });
+    const unBox = document.getElementById('unpaired-box');
+    if (unBox.style.display !== 'none') {
+      text += `\nNote: ${document.getElementById('unpaired-name').textContent}`;
+    }
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.action-btn:nth-child(2)');
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = orig, 2000);
+    });
+  }
+
+  function resetAll() {
+    document.getElementById('names-input').value = '';
+    document.getElementById('results-section').style.display = 'none';
+    document.getElementById('error-msg').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
